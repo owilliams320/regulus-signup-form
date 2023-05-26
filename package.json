@@ -1,0 +1,28 @@
+{
+  "name": "regulus-signup-form",
+  "version": "1.0.0",
+  "description": "sign up form for regulus project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/owilliams320/regulus-signup-form.git"
+  },
+  "keywords": [
+    "aws",
+    "ses",
+    "lambda",
+    "api-gateway"
+  ],
+  "author": "oseer williams",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/owilliams320/regulus-signup-form/issues"
+  },
+  "homepage": "https://github.com/owilliams320/regulus-signup-form#readme",
+  "devDependencies": {
+    "aws-sdk": "^2.1385.0"
+  }
+}

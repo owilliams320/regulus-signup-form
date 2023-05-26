@@ -1,0 +1,7 @@
+{
+  "body": "{\"name\": \"John Doe\", \"email\": \"johndoe@example.com\", \"message\": \"Hello, Lambda!\"}",
+  "httpMethod": "POST",
+  "headers": {
+    "Content-Type": "application/json"
+  }
+}
