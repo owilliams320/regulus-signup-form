@@ -11,7 +11,7 @@ exports.handler = async (event, context) => {
     const emailParams = {
       Source: 'no-reply@monkey-clumps.com', // Sender email address
       Destination: {
-        ToAddresses: ['oseer.williams@gmail.com'], // Array of recipient email addresses
+        ToAddresses: ['regulus.support@teradata.com'], // Array of recipient email addresses
       },
       Message: {
         Subject: {

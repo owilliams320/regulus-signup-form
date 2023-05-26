@@ -1,5 +1,30 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Resources:
+  SendEmailLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: src/handlers/send-email.handler
+      Role: !GetAtt SendEmailLambdaExecutionRole.Arn
+      Runtime: nodejs16.x
+
+  SendEmailLambdaExecutionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      Path: '/service-roles/'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+        - 'arn:aws:iam::aws:policy/AmazonSESFullAccess'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: 'AllowLambdaServiceToAssumeRole'
+            Effect: 'Allow'
+            Action:
+              - 'sts:AssumeRole'
+            Principal:
+              Service:
+                - 'lambda.amazonaws.com'
+
   MyApiGateway:
     Type: AWS::ApiGateway::RestApi
     Properties:
@@ -26,24 +51,17 @@ Resources:
         Type: AWS_PROXY
         Uri: !Sub
           - "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SendEmailLambda.Arn}/invocations"
+          - SendEmailLambda: !Ref SendEmailLambda
 
-  SendEmailLambda:
-    Type: AWS::Lambda::Function
+  ConfigLambdaPermission:
+    Type: "AWS::Lambda::Permission"
+    DependsOn:
+    - MyApiGateway
+    - SendEmailLambda
     Properties:
-      Handler: src/handlers/send-email.handler
-      Role: !GetAtt SendEmailLambdaExecutionRole.Arn
-      Runtime: nodejs16.x
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref SendEmailLambda
+      Principal: apigateway.amazonaws.com
 
-  SendEmailLambda ExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: lambda.amazonaws.com
-            Action: sts:AssumeRole
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
 
