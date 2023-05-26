@@ -1,15 +1,17 @@
 const AWS = require('aws-sdk');
 
 exports.handler = async (event, context) => {
+
   try {
     // Get the body from the POST request
-    const requestBody = JSON.parse(event.body);
+    //const requestBody = event.body;
+    const requestBody = decodeURIComponent(event.body).replaceAll('&', '\n').replaceAll('=', ': ');
 
     // Construct the email parameters
     const emailParams = {
-      Source: 'oseer.williams@teradata.com', // Sender email address
+      Source: 'no-reply@monkey-clumps.com', // Sender email address
       Destination: {
-        ToAddresses: ['regulus.support@teradata.com'], // Array of recipient email addresses
+        ToAddresses: ['oseer.williams@gmail.com'], // Array of recipient email addresses
       },
       Message: {
         Subject: {
@@ -17,7 +19,7 @@ exports.handler = async (event, context) => {
         },
         Body: {
           Text: {
-            Data: JSON.stringify(requestBody), // Body content of the email
+            Data: requestBody, // Body content of the email
           },
         },
       },
